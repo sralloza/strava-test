@@ -1,3 +1,4 @@
+import config.ConfigRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -16,16 +17,20 @@ public class TimeUtilsTest {
     @Mock
     private TimeProvider timeProvider;
 
+    @Mock
+    private ConfigRepository configRepository;
+
     private TimeUtils timeUtils;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        timeUtils = new TimeUtils(timeProvider);
+        timeUtils = new TimeUtils(timeProvider, configRepository);
         var today = LocalDate.of(2022, 4, 17);
 
         when(timeProvider.getTodayDate()).thenReturn(today);
         when(timeProvider.getYesterdayDate()).thenReturn(today.minusDays(1));
+        when(configRepository.getBoolean("general.spanishLocale")).thenReturn(true);
     }
 
     @ParameterizedTest(name = "{index} => dateTime={0}, expected={1}")
