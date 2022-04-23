@@ -1,0 +1,37 @@
+<configuration>
+    <include resource="terse-logback/initial.xml"/>
+    <include resource="terse-logback/censor.xml"/>
+
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <pattern>
+                    <pattern>
+                        {
+                        "time": "%date{yyyy-MM-dd'T'HH:mm:ss.SSS'Z'}",
+                        "lvl": "%level",
+                        "logger": "%logger{15}",
+                        "thread": "%thread",
+                        "msg": "%message"
+                        }
+                    </pattern>
+                </pattern>
+                <logstashMarkers/>
+                <arguments/>
+                <stackTrace/>
+            </providers>
+        </encoder>
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="stdout"/>
+    </root>
+
+    <logger name="org.asynchttpclient.netty" level="WARN"/>
+    <logger name="io.netty.util" level="WARN"/>
+
+    <Logger name="services" level="${logLevel}"/>
+    <Logger name="repositories" level="${logLevel}"/>
+    <Logger name="mappers" level="${logLevel}"/>
+    <Logger name="utils" level="${logLevel}"/>
+</configuration>
