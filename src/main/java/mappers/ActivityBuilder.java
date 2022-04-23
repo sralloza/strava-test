@@ -31,7 +31,7 @@ public class ActivityBuilder {
     }
 
     public List<Activity> buildActivities(WebElement webElement) {
-        log.debug("Finding nested abilities");
+        log.debug("Finding nested abilities from element: {}", webElement.getText());
         LocalDateTime datetime = buildDatetime(webElement);
         List<Activity> activities = webElement.findElements(By.className("GroupActivity--child-entry--0NEr-")).stream()
                 .map(w -> buildActivity(w, datetime))
@@ -50,7 +50,7 @@ public class ActivityBuilder {
     }
 
     public Activity buildActivity(WebElement webElement, LocalDateTime datetime) {
-        log.debug("Processing element: {}", webElement.getText());
+        log.debug("Building activity from element: {}", webElement.getText());
 
         datetime = Optional.ofNullable(datetime).orElse(buildDatetime(webElement));
         statsMap = getStatsMap(webElement);
