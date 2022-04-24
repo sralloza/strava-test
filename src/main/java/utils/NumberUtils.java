@@ -23,7 +23,9 @@ public class NumberUtils {
     }
 
     public Integer parsePositiveSlope(String slopeString) {
-        return Integer.parseInt(slopeString.replace("m", "").replace(".", "").strip());
+        return Integer.parseInt(slopeString.replace("m", "")
+                .replace(",", "")
+                .replace(".", "").strip());
     }
 
     public Integer parseCalories(String s) {

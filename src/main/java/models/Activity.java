@@ -17,7 +17,7 @@ public class Activity {
     private String location;
     private String description;
     private Double distance;
-    private Integer positiveSlope;
+    private Integer elevationGain;
     private Integer calories;
     private Double speed;
     private Integer heartRate;

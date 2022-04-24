@@ -7,6 +7,6 @@ public class RunStrava {
         Injector injector = Guice.createInjector(new Module());
         StravaService stravaService = injector.getInstance(StravaService.class);
 
-        stravaService.start();
+        stravaService.giveKudosToEveryone();
     }
 }

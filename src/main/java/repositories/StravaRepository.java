@@ -57,7 +57,7 @@ public class StravaRepository {
 
         driver.findElement(By.id("login-button")).click();
         waitPageLoads();
-        System.out.println(driver.getCurrentUrl());
+        log.debug("Redirected to {} after login", driver.getCurrentUrl());
     }
 
     public void logout() {
@@ -90,8 +90,12 @@ public class StravaRepository {
 
     public void giveKudo(Activity activity) {
         log.info("Giving kudo to {}", activity);
-        scrollToElement(activity.getKudoButton());
-        activity.getKudoButton().click();
+        if (configRepository.getBoolean("strava.dryRun")){
+            log.info("dryRun is enabled, skipping kudo");
+            return;
+        }
+//        scrollToElement(activity.getKudoButton());
+//        activity.getKudoButton().click();
         waitPageLoads();
     }
 }

@@ -12,6 +12,7 @@ COPY src/ /home/gradle/src/
 COPY gradle/ /home/gradle/gradle/
 COPY build.gradle settings.gradle gradlew /home/gradle/
 
+RUN ./gradlew build
 RUN ./gradlew test --scan
 RUN ./gradlew fat -i
 

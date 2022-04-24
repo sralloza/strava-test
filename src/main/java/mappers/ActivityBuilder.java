@@ -64,7 +64,7 @@ public class ActivityBuilder {
                 .setLocation(buildLocation(webElement))
                 .setDescription(buildDescription(webElement))
                 .setDistance(buildDistance())
-                .setPositiveSlope(buildPositiveSlope())
+                .setElevationGain(buildElevationGain())
                 .setTime(buildDuration())
                 .setCalories(buildCalories())
                 .setSpeed(buildSpeed(defaultSpeed))
@@ -89,7 +89,10 @@ public class ActivityBuilder {
     private String buildLocation(WebElement webElement) {
         return webElement.findElements(config.getCssSelector("location")).stream()
                 .findFirst()
-                .map(w -> w.getText().replace("·", "").strip())
+                .map(WebElement::getText)
+                .map(String::strip)
+                .map(s -> s.substring(1))
+                .map(String::strip)
                 .orElse(null);
     }
 
@@ -101,13 +104,19 @@ public class ActivityBuilder {
     private Integer buildNKudos(WebElement webElement) {
         var kudosStr = webElement.findElement(config.getCssSelector("kudoCount"))
                 .getText().replace("kudos", "");
+        if (kudosStr.contains(config.getTitle("noKudosMsg"))) {
+            return 0;
+        }
         return Integer.parseInt(kudosStr.split(" ")[0].strip());
     }
 
     private boolean buildHasKudo(WebElement webElement) {
         var kudosBtn = getKudoButton(webElement);
         var giveKudosTitle = config.getTitle("giveKudos");
-        return !giveKudosTitle.equalsIgnoreCase(kudosBtn.getAttribute("title"));
+        String kudosBtnTitle = kudosBtn.getAttribute("title");
+        boolean hasKudo = !giveKudosTitle.equalsIgnoreCase(kudosBtnTitle);
+        log.debug("Kudos button title: '{}', received '{}', result {}", giveKudosTitle, kudosBtnTitle, hasKudo);
+        return hasKudo;
     }
 
     private WebElement getKudoButton(WebElement webElement) {
@@ -128,8 +137,8 @@ public class ActivityBuilder {
                 .orElse(null);
     }
 
-    private Integer buildPositiveSlope() {
-        return Optional.ofNullable(statsMap.getOrDefault(config.getTitle("positiveSlope"), null))
+    private Integer buildElevationGain() {
+        return Optional.ofNullable(statsMap.getOrDefault(config.getTitle("elevationGain"), null))
                 .map(numberUtils::parsePositiveSlope)
                 .orElse(null);
     }

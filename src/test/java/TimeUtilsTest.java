@@ -51,22 +51,22 @@ public class TimeUtilsTest {
         };
     }
 
-//    @ParameterizedTest(name = "{index} => dateTime={0}, expected={1}")
-//    @MethodSource("getEnglishDateTimeData")
-//    public void testEnglishParseDateTime(LocalDateTime expected, String input) {
-//        when(configRepository.getBoolean("general.spanishLocale")).thenReturn(false);
-//        LocalDateTime actual = timeUtils.parseDateTime(input);
-//        assertEquals(expected, actual);
-//    }
-//
-//    public static Object[][] getEnglishDateTimeData() {
-//        return new Object[][]{
-//                {LocalDateTime.of(2022, 4, 15, 11, 18), "15 de abril de 2022 a las 11:18"},
-//                {LocalDateTime.of(2022, 4, 16, 16, 21), "Ayer a las 16:21"},
+    @ParameterizedTest(name = "{index} => dateTime={0}, expected={1}")
+    @MethodSource("getEnglishDateTimeData")
+    public void testEnglishParseDateTime(LocalDateTime expected, String input) {
+        when(configRepository.getBoolean("general.spanishLocale")).thenReturn(false);
+        LocalDateTime actual = timeUtils.parseDateTime(input);
+        assertEquals(expected, actual);
+    }
+
+    public static Object[][] getEnglishDateTimeData() {
+        return new Object[][]{
+                {LocalDateTime.of(2022, 4, 21, 16, 21), "april 21, 2022 at 4:21 pm"},
+                {LocalDateTime.of(2022, 4, 16, 8, 36), "Yesterday 8:36 AM"},
 //                {LocalDateTime.of(2022, 4, 17, 17, 46), "Hoy a las 17:46"},
 //                {LocalDateTime.of(2022, 4, 16, 9, 12), "16 de abril de 2022 a las 9:12"},
 //                {LocalDateTime.of(2022, 4, 3, 9, 26), "3 de abril de 2022 a las 9:26"},
-//
-//        };
-//    }
+
+        };
+    }
 }
